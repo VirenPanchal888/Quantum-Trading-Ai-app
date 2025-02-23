@@ -1,100 +1,79 @@
 
-import React from "react";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  ReferenceLine,
-} from "recharts";
+import React, { useEffect, useRef } from "react";
 
-// Mock candlestick data - replace with real API data later
-const generateCandlestickData = () => {
-  const data = [];
-  let price = 150;
-  
-  for (let i = 0; i < 30; i++) {
-    const open = price + (Math.random() - 0.5) * 5;
-    const close = open + (Math.random() - 0.5) * 5;
-    const high = Math.max(open, close) + Math.random() * 2;
-    const low = Math.min(open, close) - Math.random() * 2;
-    
-    data.push({
-      date: new Date(2024, 0, i + 1).toLocaleDateString(),
-      open,
-      close,
-      high,
-      low,
-      color: close >= open ? "#10B981" : "#E11D48"
-    });
-    
-    price = close;
+declare global {
+  interface Window {
+    TradingView: any;
   }
-  
-  return data;
-};
+}
 
 interface StockChartProps {
   ticker: string;
 }
 
 const StockChart = ({ ticker }: StockChartProps) => {
-  const data = generateCandlestickData();
+  const container = useRef<HTMLDivElement>(null);
+  const scriptRef = useRef<HTMLScriptElement | null>(null);
 
-  const CustomTooltip = ({ active, payload }: any) => {
-    if (active && payload && payload.length) {
-      const data = payload[0].payload;
-      return (
-        <div className="bg-slate-900/90 p-3 rounded-lg border border-white/10 shadow-xl">
-          <p className="text-sm font-medium">{data.date}</p>
-          <p className="text-sm">Open: ${data.open.toFixed(2)}</p>
-          <p className="text-sm">Close: ${data.close.toFixed(2)}</p>
-          <p className="text-sm">High: ${data.high.toFixed(2)}</p>
-          <p className="text-sm">Low: ${data.low.toFixed(2)}</p>
-        </div>
-      );
+  useEffect(() => {
+    // Add TradingView script if it doesn't exist
+    if (!scriptRef.current) {
+      const script = document.createElement('script');
+      script.src = 'https://s3.tradingview.com/tv.js';
+      script.async = true;
+      script.onload = () => initializeWidget();
+      document.body.appendChild(script);
+      scriptRef.current = script;
+    } else {
+      initializeWidget();
     }
-    return null;
-  };
+
+    function initializeWidget() {
+      if (container.current && window.TradingView) {
+        container.current.innerHTML = '';
+        new window.TradingView.widget({
+          width: "100%",
+          height: 500,
+          symbol: `NASDAQ:${ticker}`,
+          interval: "D",
+          timezone: "Etc/UTC",
+          theme: "dark",
+          style: "1",
+          locale: "en",
+          toolbar_bg: "#1e293b",
+          enable_publishing: false,
+          allow_symbol_change: false,
+          container_id: container.current.id,
+          hide_side_toolbar: false,
+          studies: [
+            "MASimple@tv-basicstudies",
+            "VWAP@tv-basicstudies"
+          ],
+          disabled_features: [
+            "use_localstorage_for_settings"
+          ],
+          enabled_features: [
+            "hide_left_toolbar_by_default"
+          ],
+        });
+      }
+    }
+
+    return () => {
+      if (container.current) {
+        container.current.innerHTML = '';
+      }
+    };
+  }, [ticker]);
 
   return (
-    <div className="glass-card p-6 h-[400px] animate-in">
+    <div className="glass-card p-6 animate-in">
       <h2 className="text-xl font-semibold mb-4">{ticker} Stock Price</h2>
-      <ResponsiveContainer width="100%" height={300}>
-        <BarChart data={data}>
-          <XAxis
-            dataKey="date"
-            stroke="#94A3B8"
-            fontSize={12}
-            tickLine={false}
-            axisLine={false}
-          />
-          <YAxis
-            stroke="#94A3B8"
-            fontSize={12}
-            tickLine={false}
-            axisLine={false}
-            tickFormatter={(value) => `$${value}`}
-          />
-          <Tooltip content={<CustomTooltip />} />
-          {data.map((entry, index) => (
-            <React.Fragment key={index}>
-              <Bar
-                dataKey="high"
-                fill={entry.color}
-                stroke={entry.color}
-              />
-              <ReferenceLine
-                y={entry.low}
-                stroke={entry.color}
-                strokeWidth={1}
-              />
-            </React.Fragment>
-          ))}
-        </BarChart>
-      </ResponsiveContainer>
+      <div 
+        ref={container} 
+        id={`tradingview_${ticker}`} 
+        className="w-full"
+      />
     </div>
   );
 };

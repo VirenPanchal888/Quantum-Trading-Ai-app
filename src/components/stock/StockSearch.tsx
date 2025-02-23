@@ -15,15 +15,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-
-// Mock data - replace with real API data later
-const mockStocks = [
-  { ticker: "AAPL", name: "Apple Inc.", sector: "Technology" },
-  { ticker: "GOOGL", name: "Alphabet Inc.", sector: "Technology" },
-  { ticker: "MSFT", name: "Microsoft Corporation", sector: "Technology" },
-  { ticker: "AMZN", name: "Amazon.com Inc.", sector: "Consumer Cyclical" },
-  { ticker: "META", name: "Meta Platforms Inc.", sector: "Technology" },
-];
+import { stockList } from "@/data/stockList";
 
 interface Stock {
   ticker: string;
@@ -58,7 +50,7 @@ const StockSearch = ({ onSelect }: StockSearchProps) => {
           <CommandList>
             <CommandEmpty>No stocks found.</CommandEmpty>
             {Object.entries(
-              mockStocks.reduce((acc, stock) => {
+              stockList.reduce((acc, stock) => {
                 if (!acc[stock.sector]) {
                   acc[stock.sector] = [];
                 }

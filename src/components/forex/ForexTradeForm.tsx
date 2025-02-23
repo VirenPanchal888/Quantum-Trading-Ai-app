@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/components/ui/toast";
 import { ForexPair, ForexTransaction } from "@/data/forexList";
 
 interface ForexTradeFormProps {
@@ -33,15 +33,12 @@ export const ForexTradeForm = ({ pair, onTrade }: ForexTradeFormProps) => {
     const transaction: ForexTransaction = {
       id: Math.random().toString(36).substring(7),
       date: new Date(),
-      ticker: pair.symbol,
-      name: pair.name,
-      sector: "Forex",
       type,
-      quantity: 1,
       price: currentPrice,
       pair: pair.symbol,
       lotSize: parseFloat(lotSize),
       leverage: 100,
+      transactionType: 'forex'
     };
 
     onTrade(transaction);

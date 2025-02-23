@@ -4,7 +4,7 @@ import Layout from "@/components/layout/Layout";
 import StockSearch from "@/components/stock/StockSearch";
 import StockChart from "@/components/stock/StockChart";
 import { TradeForm } from "@/components/stock/TradeForm";
-import { Stock, Transaction } from "@/data/stockList";
+import { Stock, Transaction } from "@/data/forexList";
 
 const Index = () => {
   const [selectedStock, setSelectedStock] = useState<Stock | null>(null);
@@ -18,9 +18,9 @@ const Index = () => {
 
   return (
     <Layout>
-      <div className="max-w-6xl mx-auto space-y-6">
-        <div className="glass-card p-6">
-          <h1 className="text-2xl font-bold mb-4">Market Overview</h1>
+      <div className="max-w-6xl mx-auto bg-white min-h-screen p-6 space-y-6">
+        <div className="rounded-lg border border-gray-200 p-6">
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Market Overview</h1>
           <StockSearch onSelect={setSelectedStock} />
         </div>
 

@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from "react";
 import Layout from "@/components/layout/Layout";
-import { Transaction } from "@/data/stockList";
+import { Transaction } from "@/data/forexList";
 
 const Portfolio = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -20,9 +20,9 @@ const Portfolio = () => {
     // Mock current price - replace with real API data
     const currentPrice = Math.random() * 100 + 50;
     const profitLoss = transaction.type === "buy" 
-      ? (currentPrice - transaction.price) * transaction.quantity
-      : (transaction.price - currentPrice) * transaction.quantity;
-    const profitLossPercentage = (profitLoss / (transaction.price * transaction.quantity)) * 100;
+      ? (currentPrice - transaction.price) * ('quantity' in transaction ? transaction.quantity : 1)
+      : (transaction.price - currentPrice) * ('quantity' in transaction ? transaction.quantity : 1);
+    const profitLossPercentage = (profitLoss / (transaction.price * ('quantity' in transaction ? transaction.quantity : 1))) * 100;
 
     return {
       currentPrice,
@@ -33,67 +33,73 @@ const Portfolio = () => {
 
   return (
     <Layout>
-      <div className="max-w-6xl mx-auto">
-        <div className="glass-card p-6">
-          <h1 className="text-2xl font-bold mb-6">Portfolio</h1>
-          <div className="overflow-x-auto">
+      <div className="max-w-6xl mx-auto bg-white min-h-screen p-6">
+        <div className="space-y-6">
+          <h1 className="text-2xl font-bold text-gray-900">Portfolio</h1>
+          <div className="overflow-x-auto rounded-lg border border-gray-200">
             <table className="w-full">
-              <thead>
-                <tr className="border-b border-white/10">
-                  <th className="text-left p-3">Date</th>
-                  <th className="text-left p-3">Stock</th>
-                  <th className="text-left p-3">Type</th>
-                  <th className="text-right p-3">Quantity</th>
-                  <th className="text-right p-3">Price</th>
-                  <th className="text-right p-3">Current</th>
-                  <th className="text-right p-3">P/L</th>
-                  <th className="text-right p-3">P/L %</th>
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-900">Date</th>
+                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-900">Type</th>
+                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-900">Asset</th>
+                  <th className="px-4 py-3 text-left text-sm font-medium text-gray-900">Action</th>
+                  <th className="px-4 py-3 text-right text-sm font-medium text-gray-900">Amount</th>
+                  <th className="px-4 py-3 text-right text-sm font-medium text-gray-900">Price</th>
+                  <th className="px-4 py-3 text-right text-sm font-medium text-gray-900">Current</th>
+                  <th className="px-4 py-3 text-right text-sm font-medium text-gray-900">P/L</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-gray-200">
                 {transactions.map((transaction) => {
                   const { currentPrice, profitLoss, profitLossPercentage } = calculateMetrics(transaction);
                   return (
-                    <tr
-                      key={transaction.id}
-                      className="border-b border-white/5 hover:bg-white/5"
-                    >
-                      <td className="p-3">
+                    <tr key={transaction.id} className="hover:bg-gray-50">
+                      <td className="px-4 py-3">
                         {transaction.date.toLocaleDateString()}
-                        <div className="text-xs text-gray-400">
+                        <div className="text-xs text-gray-500">
                           {transaction.date.toLocaleTimeString()}
                         </div>
                       </td>
-                      <td className="p-3">
-                        <div className="font-medium">{transaction.ticker}</div>
-                        <div className="text-xs text-gray-400">{transaction.sector}</div>
+                      <td className="px-4 py-3 text-sm text-gray-500">
+                        {transaction.transactionType}
                       </td>
-                      <td className="p-3">
+                      <td className="px-4 py-3">
+                        <div className="font-medium text-gray-900">
+                          {'ticker' in transaction ? transaction.ticker : transaction.pair}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          {'sector' in transaction ? transaction.sector : 'Forex'}
+                        </div>
+                      </td>
+                      <td className="px-4 py-3">
                         <span
-                          className={`px-2 py-1 rounded-full text-xs ${
+                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                             transaction.type === "buy"
-                              ? "bg-emerald-500/20 text-emerald-400"
-                              : "bg-rose-500/20 text-rose-400"
+                              ? "bg-green-100 text-green-800"
+                              : "bg-red-100 text-red-800"
                           }`}
                         >
                           {transaction.type}
                         </span>
                       </td>
-                      <td className="p-3 text-right">{transaction.quantity}</td>
-                      <td className="p-3 text-right">${transaction.price.toFixed(2)}</td>
-                      <td className="p-3 text-right">${currentPrice.toFixed(2)}</td>
-                      <td className="p-3 text-right">
+                      <td className="px-4 py-3 text-right text-gray-900">
+                        {'quantity' in transaction ? transaction.quantity : transaction.lotSize}
+                      </td>
+                      <td className="px-4 py-3 text-right text-gray-900">
+                        ${transaction.price.toFixed(2)}
+                      </td>
+                      <td className="px-4 py-3 text-right text-gray-900">
+                        ${currentPrice.toFixed(2)}
+                      </td>
+                      <td className="px-4 py-3 text-right">
                         <span
-                          className={profitLoss >= 0 ? "text-emerald-400" : "text-rose-400"}
+                          className={profitLoss >= 0 ? "text-green-600" : "text-red-600"}
                         >
                           ${Math.abs(profitLoss).toFixed(2)}
-                        </span>
-                      </td>
-                      <td className="p-3 text-right">
-                        <span
-                          className={profitLossPercentage >= 0 ? "text-emerald-400" : "text-rose-400"}
-                        >
-                          {profitLossPercentage.toFixed(2)}%
+                          <div className="text-xs">
+                            {profitLossPercentage.toFixed(2)}%
+                          </div>
                         </span>
                       </td>
                     </tr>

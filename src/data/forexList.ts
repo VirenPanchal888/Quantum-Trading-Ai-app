@@ -1,10 +1,55 @@
 
+// Top 500 stocks data by sector (100 per sector)
+export const stockListByCategory = {
+  Technology: [
+    { ticker: "AAPL", name: "Apple Inc.", sector: "Technology" },
+    { ticker: "MSFT", name: "Microsoft Corporation", sector: "Technology" },
+    // ... Add more technology stocks
+  ],
+  Healthcare: [
+    { ticker: "UNH", name: "UnitedHealth Group Inc.", sector: "Healthcare" },
+    { ticker: "JNJ", name: "Johnson & Johnson", sector: "Healthcare" },
+    // ... Add more healthcare stocks
+  ],
+  Financial: [
+    { ticker: "JPM", name: "JPMorgan Chase & Co.", sector: "Financial" },
+    { ticker: "BAC", name: "Bank of America Corp.", sector: "Financial" },
+    // ... Add more financial stocks
+  ],
+  // ... Add more sectors
+};
+
 export interface ForexPair {
   symbol: string;
   name: string;
   category: 'major' | 'minor' | 'exotic';
   description: string;
 }
+
+export interface BaseTransaction {
+  id: string;
+  date: Date;
+  type: 'buy' | 'sell';
+  price: number;
+  profitLoss?: number;
+}
+
+export interface StockTransaction extends BaseTransaction {
+  ticker: string;
+  name: string;
+  sector: string;
+  quantity: number;
+  transactionType: 'stock';
+}
+
+export interface ForexTransaction extends BaseTransaction {
+  pair: string;
+  lotSize: number;
+  leverage?: number;
+  transactionType: 'forex';
+}
+
+export type Transaction = StockTransaction | ForexTransaction;
 
 export const forexPairs: ForexPair[] = [
   // Major Pairs
@@ -29,9 +74,3 @@ export const forexPairs: ForexPair[] = [
   { symbol: "USD/THB", name: "US Dollar / Thai Baht", category: "exotic", description: "US Dollar vs Thai Baht" },
   // Add more pairs as needed
 ];
-
-export interface ForexTransaction extends Transaction {
-  pair: string;
-  lotSize: number;
-  leverage?: number;
-}

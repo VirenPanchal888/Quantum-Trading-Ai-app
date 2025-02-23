@@ -1,4 +1,5 @@
 
+import React from "react";
 import {
   BarChart,
   Bar,
@@ -82,7 +83,6 @@ const StockChart = ({ ticker }: StockChartProps) => {
             <React.Fragment key={index}>
               <Bar
                 dataKey="high"
-                position="none"
                 fill={entry.color}
                 stroke={entry.color}
               />

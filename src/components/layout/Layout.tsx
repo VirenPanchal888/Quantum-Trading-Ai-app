@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Menu, Search, Wallet2, Rocket } from "lucide-react";
+import { Menu, Search, Wallet2, Rocket, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -10,6 +10,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
 
   const isActive = (path: string) => location.pathname === path;
+  const isHomePage = location.pathname === "/";
 
   const navItems = [
     { name: "Market", path: "/", icon: Search },
@@ -55,14 +56,26 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       >
         <header className="sticky top-0 z-40 bg-black/20 backdrop-blur-xl border-b border-white/10">
           <div className="flex items-center justify-between px-6 py-4">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="lg:hidden"
-              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            >
-              <Menu className="w-6 h-6" />
-            </Button>
+            <div className="flex items-center gap-4">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="lg:hidden"
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              >
+                <Menu className="w-6 h-6" />
+              </Button>
+              {!isHomePage && (
+                <Button
+                  variant="ghost"
+                  className="text-gray-400 hover:text-white"
+                  onClick={() => navigate("/")}
+                >
+                  <ArrowLeft className="w-5 h-5 mr-2" />
+                  Back to Home
+                </Button>
+              )}
+            </div>
           </div>
         </header>
         <div className="p-6">{children}</div>

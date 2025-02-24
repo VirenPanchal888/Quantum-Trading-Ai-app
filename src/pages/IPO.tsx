@@ -1,7 +1,6 @@
-
 import { useState } from "react";
 import Layout from "@/components/layout/Layout";
-import { IPOData, IPOTransaction } from "@/data/forexList";
+import { IPOData, IPOTransaction, ipoList } from "@/data/forexList";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 

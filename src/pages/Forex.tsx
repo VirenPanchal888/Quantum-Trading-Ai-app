@@ -39,7 +39,7 @@ const Forex = () => {
 
           {selectedPair && (
             <>
-              <ForexChart pair={selectedPair.symbol} />
+              <ForexChart pair={selectedPair.pair} />
               <ForexTradeForm pair={selectedPair} onTrade={handleTrade} />
             </>
           )}

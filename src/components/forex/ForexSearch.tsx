@@ -49,15 +49,15 @@ export const ForexSearch = ({ onSelect }: ForexSearchProps) => {
                   .filter((pair) => pair.category === category)
                   .map((pair) => (
                     <CommandItem
-                      key={pair.symbol}
+                      key={pair.pair}
                       onSelect={() => {
-                        setValue(pair.symbol);
+                        setValue(pair.pair);
                         onSelect(pair);
                         setOpen(false);
                       }}
                       className="flex items-center"
                     >
-                      <span className="font-medium">{pair.symbol}</span>
+                      <span className="font-medium">{pair.pair}</span>
                       <span className="ml-2 text-sm text-gray-500">
                         {pair.description}
                       </span>

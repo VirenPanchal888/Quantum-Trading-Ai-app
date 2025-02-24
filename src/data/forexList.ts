@@ -1,3 +1,4 @@
+
 export interface Stock {
   ticker: string;
   name: string;
@@ -75,41 +76,48 @@ export const ipoList: IPOData[] = [
   }
 ];
 
-export const forexPairs = [
+export interface ForexPair {
+  pair: string;
+  name: string;
+  category: 'major' | 'minor' | 'exotic';
+  description: string;
+}
+
+export const forexPairs: ForexPair[] = [
   {
     pair: "EUR/USD",
     name: "Euro / US Dollar",
-    pip: 0.0001,
-    standardLot: 100000
+    category: "major",
+    description: "Euro vs US Dollar"
   },
   {
     pair: "GBP/USD",
     name: "British Pound / US Dollar",
-    pip: 0.0001,
-    standardLot: 100000
+    category: "major",
+    description: "British Pound vs US Dollar"
   },
   {
     pair: "USD/JPY",
     name: "US Dollar / Japanese Yen",
-    pip: 0.01,
-    standardLot: 100000
+    category: "major",
+    description: "US Dollar vs Japanese Yen"
   },
   {
     pair: "USD/CHF",
     name: "US Dollar / Swiss Franc",
-    pip: 0.0001,
-    standardLot: 100000
+    category: "major",
+    description: "US Dollar vs Swiss Franc"
   },
   {
     pair: "AUD/USD",
     name: "Australian Dollar / US Dollar",
-    pip: 0.0001,
-    standardLot: 100000
+    category: "major",
+    description: "Australian Dollar vs US Dollar"
   },
   {
     pair: "USD/CAD",
     name: "US Dollar / Canadian Dollar",
-    pip: 0.0001,
-    standardLot: 100000
+    category: "major",
+    description: "US Dollar vs Canadian Dollar"
   }
 ];

@@ -19,16 +19,37 @@ const Portfolio = () => {
   const calculateMetrics = (transaction: Transaction) => {
     // Mock current price - replace with real API data
     const currentPrice = Math.random() * 100 + 50;
+    let amount = 0;
+    
+    if (transaction.transactionType === 'stock') {
+      amount = transaction.quantity;
+    } else if (transaction.transactionType === 'forex') {
+      amount = transaction.lotSize;
+    } else if (transaction.transactionType === 'ipo') {
+      amount = transaction.shares;
+    }
+    
     const profitLoss = transaction.type === "buy" 
-      ? (currentPrice - transaction.price) * ('quantity' in transaction ? transaction.quantity : 1)
-      : (transaction.price - currentPrice) * ('quantity' in transaction ? transaction.quantity : 1);
-    const profitLossPercentage = (profitLoss / (transaction.price * ('quantity' in transaction ? transaction.quantity : 1))) * 100;
+      ? (currentPrice - transaction.price) * amount
+      : (transaction.price - currentPrice) * amount;
+    const profitLossPercentage = (profitLoss / (transaction.price * amount)) * 100;
 
     return {
       currentPrice,
       profitLoss,
       profitLossPercentage,
     };
+  };
+
+  const getAmount = (transaction: Transaction) => {
+    switch (transaction.transactionType) {
+      case 'forex':
+        return transaction.lotSize;
+      case 'stock':
+        return transaction.quantity;
+      case 'ipo':
+        return transaction.shares;
+    }
   };
 
   return (
@@ -84,7 +105,7 @@ const Portfolio = () => {
                         </span>
                       </td>
                       <td className="px-4 py-3 text-right text-gray-900">
-                        {'quantity' in transaction ? transaction.quantity : transaction.lotSize}
+                        {getAmount(transaction)}
                       </td>
                       <td className="px-4 py-3 text-right text-gray-900">
                         ${transaction.price.toFixed(2)}

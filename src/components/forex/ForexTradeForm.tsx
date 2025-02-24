@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/toast";
+import { useToast } from "@/hooks/use-toast";
 import { ForexPair, ForexTransaction } from "@/data/forexList";
 
 interface ForexTradeFormProps {
@@ -35,7 +35,7 @@ export const ForexTradeForm = ({ pair, onTrade }: ForexTradeFormProps) => {
       date: new Date(),
       type,
       price: currentPrice,
-      pair: pair.symbol,
+      pair: pair.pair,
       lotSize: parseFloat(lotSize),
       leverage: 100,
       transactionType: 'forex'
@@ -45,7 +45,7 @@ export const ForexTradeForm = ({ pair, onTrade }: ForexTradeFormProps) => {
     setLotSize("");
     
     toast({
-      title: `${type === "buy" ? "Bought" : "Sold"} ${lotSize} lots of ${pair.symbol}`,
+      title: `${type === "buy" ? "Bought" : "Sold"} ${lotSize} lots of ${pair.pair}`,
       description: `Price: ${currentPrice.toFixed(4)}`,
     });
   };

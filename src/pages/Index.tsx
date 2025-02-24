@@ -4,16 +4,18 @@ import Layout from "@/components/layout/Layout";
 import StockSearch from "@/components/stock/StockSearch";
 import StockChart from "@/components/stock/StockChart";
 import { TradeForm } from "@/components/stock/TradeForm";
-import { Stock, Transaction } from "@/data/forexList";
+import { Stock, StockTransaction } from "@/data/forexList";
 
 const Index = () => {
   const [selectedStock, setSelectedStock] = useState<Stock | null>(null);
-  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [transactions, setTransactions] = useState<StockTransaction[]>([]);
 
-  const handleTrade = (transaction: Transaction) => {
+  const handleTrade = (transaction: StockTransaction) => {
     setTransactions((prev) => [...prev, transaction]);
     // In a real app, you would save this to a database
-    localStorage.setItem("transactions", JSON.stringify([...transactions, transaction]));
+    const savedTransactions = localStorage.getItem('transactions');
+    const allTransactions = savedTransactions ? JSON.parse(savedTransactions) : [];
+    localStorage.setItem('transactions', JSON.stringify([...allTransactions, transaction]));
   };
 
   return (

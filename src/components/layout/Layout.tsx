@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Menu, Search, Wallet2, Settings } from "lucide-react";
+import { Menu, Search, Wallet2, Rocket } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -14,12 +14,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const navItems = [
     { name: "Market", path: "/", icon: Search },
     { name: "Portfolio", path: "/portfolio", icon: Wallet2 },
-    { name: "Settings", path: "/settings", icon: Settings },
+    { name: "IPO", path: "/ipo", icon: Rocket },
   ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800">
-      {/* Sidebar */}
       <aside
         className={`fixed top-0 left-0 h-full w-64 bg-black/20 backdrop-blur-xl border-r border-white/10 transform transition-transform duration-300 ease-in-out z-50 ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
@@ -49,7 +48,6 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         </nav>
       </aside>
 
-      {/* Main Content */}
       <main
         className={`transition-all duration-300 ease-in-out ${
           isSidebarOpen ? "lg:ml-64" : "lg:ml-64"
@@ -70,7 +68,6 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <div className="p-6">{children}</div>
       </main>
 
-      {/* Mobile sidebar overlay */}
       {isSidebarOpen && (
         <div
           className="fixed inset-0 bg-black/50 z-40 lg:hidden"

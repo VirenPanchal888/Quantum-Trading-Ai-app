@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Portfolio from "./pages/Portfolio";
 import Forex from "./pages/Forex";
+import IPO from "./pages/IPO";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -21,6 +22,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/forex" element={<Forex />} />
+          <Route path="/ipo" element={<IPO />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

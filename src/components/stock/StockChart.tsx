@@ -43,7 +43,7 @@ const StockChart = ({ ticker }: StockChartProps) => {
         new window.TradingView.widget({
           width: "100%",
           height: 500,
-          symbol: `NASDAQ:${ticker}`,
+          symbol: ticker.includes(':') ? ticker : `NYSE:${ticker}`,
           interval: timeframeIntervals[timeframe],
           timezone: "Etc/UTC",
           theme: "dark",

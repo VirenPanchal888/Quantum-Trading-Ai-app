@@ -1,5 +1,6 @@
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
 
 declare global {
   interface Window {
@@ -14,9 +15,17 @@ interface StockChartProps {
 const StockChart = ({ ticker }: StockChartProps) => {
   const container = useRef<HTMLDivElement>(null);
   const scriptRef = useRef<HTMLScriptElement | null>(null);
+  const [timeframe, setTimeframe] = useState<"1D" | "1W" | "1M" | "3M" | "1Y">("1D");
+
+  const timeframeIntervals = {
+    "1D": "5",
+    "1W": "15",
+    "1M": "60",
+    "3M": "D",
+    "1Y": "W"
+  };
 
   useEffect(() => {
-    // Add TradingView script if it doesn't exist
     if (!scriptRef.current) {
       const script = document.createElement('script');
       script.src = 'https://s3.tradingview.com/tv.js';
@@ -35,7 +44,7 @@ const StockChart = ({ ticker }: StockChartProps) => {
           width: "100%",
           height: 500,
           symbol: `NASDAQ:${ticker}`,
-          interval: "D",
+          interval: timeframeIntervals[timeframe],
           timezone: "Etc/UTC",
           theme: "dark",
           style: "1",
@@ -64,11 +73,25 @@ const StockChart = ({ ticker }: StockChartProps) => {
         container.current.innerHTML = '';
       }
     };
-  }, [ticker]);
+  }, [ticker, timeframe]);
 
   return (
     <div className="glass-card p-6 animate-in">
-      <h2 className="text-xl font-semibold mb-4">{ticker} Stock Price</h2>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-xl font-semibold text-white">{ticker} Stock Price</h2>
+        <div className="flex gap-2">
+          {(Object.keys(timeframeIntervals) as Array<keyof typeof timeframeIntervals>).map((tf) => (
+            <Button
+              key={tf}
+              variant={timeframe === tf ? "default" : "outline"}
+              onClick={() => setTimeframe(tf)}
+              className="text-sm"
+            >
+              {tf}
+            </Button>
+          ))}
+        </div>
+      </div>
       <div 
         ref={container} 
         id={`tradingview_${ticker}`} 

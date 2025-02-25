@@ -9,6 +9,11 @@ import Portfolio from "./pages/Portfolio";
 import Forex from "./pages/Forex";
 import IPO from "./pages/IPO";
 import Options from "./pages/Options";
+import MarketAnalysis from "./pages/MarketAnalysis";
+import Screener from "./pages/Screener";
+import Watchlist from "./pages/Watchlist";
+import News from "./pages/News";
+import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,6 +30,11 @@ const App = () => (
           <Route path="/forex" element={<Forex />} />
           <Route path="/ipo" element={<IPO />} />
           <Route path="/options" element={<Options />} />
+          <Route path="/market-analysis" element={<MarketAnalysis />} />
+          <Route path="/screener" element={<Screener />} />
+          <Route path="/watchlist" element={<Watchlist />} />
+          <Route path="/news" element={<News />} />
+          <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

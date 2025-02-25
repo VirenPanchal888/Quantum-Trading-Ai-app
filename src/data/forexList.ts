@@ -6,8 +6,24 @@ export interface Stock {
   marketCap: string;
 }
 
+export interface StockTransaction {
+  id: string;
+  date: Date;
+  type: 'buy' | 'sell';
+  ticker: string;
+  name: string;
+  sector: string;
+  quantity: number;
+  price: number;
+  currentPrice?: number;
+  profitLoss?: number;
+  profitLossPercentage?: number;
+  transactionType: 'stock';
+}
+
 export interface ForexPair {
   symbol: string;
+  pair: string;
   name: string;
   description: string;
   category: 'major' | 'minor' | 'exotic';
@@ -30,9 +46,16 @@ export interface ForexTransaction {
 
 export interface IPOData {
   symbol: string;
+  ticker: string;
+  name: string;
   companyName: string;
+  sector: string;
+  description: string;
   expectedDate: string;
+  listingDate: string;
   priceRange: string;
+  offerPrice: number;
+  marketCap: string;
   shares: number;
   status: 'upcoming' | 'completed' | 'withdrawn';
 }
@@ -45,11 +68,15 @@ export interface IPOTransaction {
   shares: number;
   price: number;
   type: 'subscribe' | 'allotted' | 'cancelled';
+  transactionType: 'ipo';
 }
+
+export type Transaction = StockTransaction | ForexTransaction | IPOTransaction;
 
 export const forexPairs: ForexPair[] = [
   {
     symbol: "EUR/USD",
+    pair: "EUR/USD",
     name: "Euro / US Dollar",
     description: "Euro vs US Dollar",
     category: "major",
@@ -116,20 +143,32 @@ export const forexPairs: ForexPair[] = [
 export const ipoList: IPOData[] = [
   {
     symbol: "COOL",
+    ticker: "COOL",
+    name: "Cool Tech Inc.",
     companyName: "Cool Tech Inc.",
+    sector: "Technology",
+    description: "Next-generation cooling technology solutions",
     expectedDate: "2024-04-15",
+    listingDate: "2024-04-15",
     priceRange: "$18-22",
+    offerPrice: 20,
+    marketCap: "2B",
     shares: 10000000,
     status: "upcoming"
   },
   {
     symbol: "INNV",
+    ticker: "INNV",
+    name: "Innovation Labs",
     companyName: "Innovation Labs",
+    sector: "Technology",
+    description: "AI-powered research and development",
     expectedDate: "2024-05-01",
+    listingDate: "2024-05-01",
     priceRange: "$24-28",
+    offerPrice: 26,
+    marketCap: "1.5B",
     shares: 5000000,
     status: "upcoming"
   }
 ];
-
-export type Transaction = ForexTransaction | IPOTransaction;

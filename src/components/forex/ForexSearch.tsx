@@ -32,7 +32,7 @@ export const ForexSearch = ({ onSelect }: ForexSearchProps) => {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[300px] justify-between bg-white border-gray-200 text-gray-900 hover:bg-gray-50"
+          className="w-[300px] justify-between bg-white/5 border-white/10 text-white hover:bg-white/10"
         >
           {value || "Search currency pairs..."}
           <Search className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -49,15 +49,15 @@ export const ForexSearch = ({ onSelect }: ForexSearchProps) => {
                   .filter((pair) => pair.category === category)
                   .map((pair) => (
                     <CommandItem
-                      key={pair.pair}
+                      key={pair.symbol}
                       onSelect={() => {
-                        setValue(pair.pair);
+                        setValue(pair.symbol);
                         onSelect(pair);
                         setOpen(false);
                       }}
                       className="flex items-center"
                     >
-                      <span className="font-medium">{pair.pair}</span>
+                      <span className="font-medium">{pair.symbol}</span>
                       <span className="ml-2 text-sm text-gray-500">
                         {pair.description}
                       </span>

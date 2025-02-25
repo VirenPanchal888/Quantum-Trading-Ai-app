@@ -1,3 +1,4 @@
+
 export interface Stock {
   ticker: string;
   name: string;
@@ -8,15 +9,50 @@ export interface Stock {
 export interface ForexPair {
   symbol: string;
   name: string;
+  description: string;
+  category: 'major' | 'minor' | 'exotic';
   bid: number;
   ask: number;
   change: number;
 }
 
-export const forexList: ForexPair[] = [
+export interface ForexTransaction {
+  id: string;
+  date: Date;
+  type: 'buy' | 'sell';
+  pair: string;
+  lotSize: number;
+  price: number;
+  leverage: number;
+  profitLoss?: number;
+  transactionType: 'forex';
+}
+
+export interface IPOData {
+  symbol: string;
+  companyName: string;
+  expectedDate: string;
+  priceRange: string;
+  shares: number;
+  status: 'upcoming' | 'completed' | 'withdrawn';
+}
+
+export interface IPOTransaction {
+  id: string;
+  date: Date;
+  symbol: string;
+  companyName: string;
+  shares: number;
+  price: number;
+  type: 'subscribe' | 'allotted' | 'cancelled';
+}
+
+export const forexPairs: ForexPair[] = [
   {
     symbol: "EUR/USD",
     name: "Euro / US Dollar",
+    description: "Euro vs US Dollar",
+    category: "major",
     bid: 1.0925,
     ask: 1.0927,
     change: 0.05
@@ -24,6 +60,8 @@ export const forexList: ForexPair[] = [
   {
     symbol: "GBP/USD",
     name: "British Pound / US Dollar",
+    description: "British Pound vs US Dollar",
+    category: "major",
     bid: 1.2750,
     ask: 1.2752,
     change: -0.02
@@ -31,6 +69,8 @@ export const forexList: ForexPair[] = [
   {
     symbol: "USD/JPY",
     name: "US Dollar / Japanese Yen",
+    description: "US Dollar vs Japanese Yen",
+    category: "major",
     bid: 149.80,
     ask: 149.83,
     change: 0.10
@@ -38,6 +78,8 @@ export const forexList: ForexPair[] = [
   {
     symbol: "USD/CHF",
     name: "US Dollar / Swiss Franc",
+    description: "US Dollar vs Swiss Franc",
+    category: "major",
     bid: 0.8845,
     ask: 0.8848,
     change: -0.03
@@ -45,27 +87,17 @@ export const forexList: ForexPair[] = [
   {
     symbol: "AUD/USD",
     name: "Australian Dollar / US Dollar",
+    description: "Australian Dollar vs US Dollar",
+    category: "major",
     bid: 0.6520,
     ask: 0.6522,
     change: 0.01
   },
   {
-    symbol: "USD/CAD",
-    name: "US Dollar / Canadian Dollar",
-    bid: 1.3550,
-    ask: 1.3553,
-    change: 0.04
-  },
-  {
-    symbol: "NZD/USD",
-    name: "New Zealand Dollar / US Dollar",
-    bid: 0.6050,
-    ask: 0.6053,
-    change: -0.01
-  },
-  {
     symbol: "EUR/GBP",
     name: "Euro / British Pound",
+    description: "Euro vs British Pound",
+    category: "minor",
     bid: 0.8560,
     ask: 0.8562,
     change: 0.02
@@ -73,15 +105,31 @@ export const forexList: ForexPair[] = [
   {
     symbol: "EUR/JPY",
     name: "Euro / Japanese Yen",
+    description: "Euro vs Japanese Yen",
+    category: "minor",
     bid: 163.60,
     ask: 163.63,
     change: 0.08
-  },
-  {
-    symbol: "GBP/JPY",
-    name: "British Pound / Japanese Yen",
-    bid: 191.20,
-    ask: 191.25,
-    change: 0.15
   }
 ];
+
+export const ipoList: IPOData[] = [
+  {
+    symbol: "COOL",
+    companyName: "Cool Tech Inc.",
+    expectedDate: "2024-04-15",
+    priceRange: "$18-22",
+    shares: 10000000,
+    status: "upcoming"
+  },
+  {
+    symbol: "INNV",
+    companyName: "Innovation Labs",
+    expectedDate: "2024-05-01",
+    priceRange: "$24-28",
+    shares: 5000000,
+    status: "upcoming"
+  }
+];
+
+export type Transaction = ForexTransaction | IPOTransaction;

@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Portfolio from "./pages/Portfolio";
 import Forex from "./pages/Forex";
 import IPO from "./pages/IPO";
+import Options from "./pages/Options";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/portfolio" element={<Portfolio />} />
           <Route path="/forex" element={<Forex />} />
           <Route path="/ipo" element={<IPO />} />
+          <Route path="/options" element={<Options />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

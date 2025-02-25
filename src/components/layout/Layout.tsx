@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Menu, Search, Wallet2, Rocket, ArrowLeft } from "lucide-react";
+import { Menu, Search, Wallet2, Rocket, ArrowLeft, BarChart2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -15,6 +15,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const navItems = [
     { name: "Market", path: "/", icon: Search },
     { name: "Portfolio", path: "/portfolio", icon: Wallet2 },
+    { name: "Options", path: "/options", icon: BarChart2 },
     { name: "IPO", path: "/ipo", icon: Rocket },
   ];
 

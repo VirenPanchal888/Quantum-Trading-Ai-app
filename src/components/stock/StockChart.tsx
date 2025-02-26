@@ -1,6 +1,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 
 declare global {
   interface Window {
@@ -15,6 +16,7 @@ interface StockChartProps {
 const StockChart = ({ ticker }: StockChartProps) => {
   const container = useRef<HTMLDivElement>(null);
   const [timeframe, setTimeframe] = useState<"1D" | "1W" | "1M" | "3M" | "1Y">("1D");
+  const [isLoading, setIsLoading] = useState(true);
 
   const timeframeIntervals = {
     "1D": "5",
@@ -25,6 +27,7 @@ const StockChart = ({ ticker }: StockChartProps) => {
   };
 
   useEffect(() => {
+    setIsLoading(true);
     const script = document.createElement('script');
     script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
     script.type = 'text/javascript';
@@ -63,6 +66,10 @@ const StockChart = ({ ticker }: StockChartProps) => {
       
       script.innerHTML = JSON.stringify(config);
       container.current.appendChild(script);
+
+      script.onload = () => {
+        setIsLoading(false);
+      };
     }
 
     return () => {
@@ -89,10 +96,18 @@ const StockChart = ({ ticker }: StockChartProps) => {
           ))}
         </div>
       </div>
-      <div 
-        ref={container}
-        className="w-full relative"
-      />
+      <div className="w-full relative min-h-[600px]">
+        {isLoading && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm rounded-lg">
+            <Loader2 className="w-10 h-10 text-blue-500 animate-spin mb-4" />
+            <p className="text-white text-lg">Loading {ticker} chart data...</p>
+          </div>
+        )}
+        <div 
+          ref={container}
+          className="w-full relative"
+        />
+      </div>
     </div>
   );
 };

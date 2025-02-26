@@ -1,5 +1,5 @@
-*https://lovable.dev/projects/d80dc538-a784-4d56-8a0c-6b3894fc29f3*
-Stock Market Trading App (Built with lovable.ai)
+*https://preview--quantum-portfoliovisor.lovable.app/*
+ Stock Market Trading App (Built with lovable.ai)
 Empower your investing journey with this real-time stock market trading application, designed to deliver fast, accurate market data so you can react quickly to price changes and make informed decisions on the go.
 Key Features:
 Intuitive Interface – Navigate through clean dashboards, watchlists, and charts with ease.

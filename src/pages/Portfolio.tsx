@@ -53,7 +53,8 @@ const Portfolio = () => {
 
   const getTransactionDisplayInfo = (transaction: Transaction) => {
     if (transaction.transactionType === 'forex') {
-      return `${transaction.pair} ${transaction.type.toUpperCase()}`;
+      const forexTransaction = transaction as ForexTransaction;
+      return `${forexTransaction.pair} ${transaction.type.toUpperCase()}`;
     } else if (transaction.transactionType === 'ipo') {
       return `${transaction.symbol} ${transaction.type.toUpperCase()}`;
     } else {

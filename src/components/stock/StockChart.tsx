@@ -14,7 +14,6 @@ interface StockChartProps {
 
 const StockChart = ({ ticker }: StockChartProps) => {
   const container = useRef<HTMLDivElement>(null);
-  const scriptRef = useRef<HTMLScriptElement | null>(null);
   const [timeframe, setTimeframe] = useState<"1D" | "1W" | "1M" | "3M" | "1Y">("1D");
 
   const timeframeIntervals = {
@@ -26,46 +25,44 @@ const StockChart = ({ ticker }: StockChartProps) => {
   };
 
   useEffect(() => {
-    if (!scriptRef.current) {
-      const script = document.createElement('script');
-      script.src = 'https://s3.tradingview.com/tv.js';
-      script.async = true;
-      script.onload = () => initializeWidget();
-      document.body.appendChild(script);
-      scriptRef.current = script;
-    } else {
-      initializeWidget();
-    }
+    const script = document.createElement('script');
+    script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+    script.type = 'text/javascript';
+    script.async = true;
 
-    function initializeWidget() {
-      if (container.current && window.TradingView) {
-        container.current.innerHTML = '';
-        new window.TradingView.widget({
-          autosize: true,
-          symbol: ticker.includes(':') ? ticker : `NYSE:${ticker}`,
-          interval: timeframeIntervals[timeframe],
-          timezone: "Etc/UTC",
-          theme: "dark",
-          style: "1",
-          locale: "en",
-          toolbar_bg: "#1e293b",
-          enable_publishing: false,
-          allow_symbol_change: true,
-          container_id: container.current.id,
-          hide_side_toolbar: false,
-          withdateranges: true,
-          range: "YTD",
-          studies: [
-            "MASimple@tv-basicstudies",
-            "RSI@tv-basicstudies",
-            "MACD@tv-basicstudies",
-            "StochasticRSI@tv-basicstudies"
-          ],
-          height: 600,
-          save_image: true,
-          show_popup_button: true,
-        });
-      }
+    const config = {
+      "autosize": true,
+      "symbol": ticker.includes(':') ? ticker : `NYSE:${ticker}`,
+      "interval": timeframeIntervals[timeframe],
+      "timezone": "exchange",
+      "theme": "dark",
+      "style": "1",
+      "locale": "en",
+      "enable_publishing": false,
+      "allow_symbol_change": true,
+      "support_host": "https://www.tradingview.com",
+      "backgroundColor": "rgba(0, 0, 0, 1)",
+      "gridColor": "rgba(41, 41, 41, 1)",
+      "hide_top_toolbar": false,
+      "hide_side_toolbar": false,
+      "withdateranges": true,
+      "save_image": true,
+      "studies": [
+        "MASimple@tv-basicstudies",
+        "RSI@tv-basicstudies",
+        "MACD@tv-basicstudies"
+      ],
+      "container_id": `tradingview_${ticker.replace(':', '_')}`,
+      "height": 600
+    };
+
+    if (container.current) {
+      container.current.innerHTML = `<div class="tradingview-widget-container">
+        <div id="tradingview_${ticker.replace(':', '_')}" style="height: 600px;"></div>
+      </div>`;
+      
+      script.innerHTML = JSON.stringify(config);
+      container.current.appendChild(script);
     }
 
     return () => {
@@ -76,7 +73,7 @@ const StockChart = ({ ticker }: StockChartProps) => {
   }, [ticker, timeframe]);
 
   return (
-    <div className="glass-card p-6 animate-in">
+    <div className="rounded-lg bg-black/40 backdrop-blur-xl border border-white/10 p-6">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-semibold text-white">{ticker} Stock Price</h2>
         <div className="flex gap-2">
@@ -93,9 +90,8 @@ const StockChart = ({ ticker }: StockChartProps) => {
         </div>
       </div>
       <div 
-        ref={container} 
-        id={`tradingview_${ticker.replace(':', '_')}`} 
-        className="w-full h-[600px]"
+        ref={container}
+        className="w-full relative"
       />
     </div>
   );

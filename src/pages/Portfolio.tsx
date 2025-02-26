@@ -51,13 +51,14 @@ const Portfolio = () => {
     }
   };
 
-  const filterTransactions = (transaction: Transaction) => {
-    if (transaction.transactionType === 'forex') {
-      return `${transaction.pair} ${transaction.type.toUpperCase()}`;
-    } else if (transaction.transactionType === 'ipo') {
-      return `${transaction.symbol} ${transaction.type.toUpperCase()}`;
-    } else {
-      return `${transaction.ticker} ${transaction.type.toUpperCase()}`;
+  const getTransactionDisplayInfo = (transaction: Transaction) => {
+    switch (transaction.transactionType) {
+      case 'forex':
+        return `${transaction.pair} ${transaction.type.toUpperCase()}`;
+      case 'ipo':
+        return `${transaction.symbol} ${transaction.type.toUpperCase()}`;
+      case 'stock':
+        return `${transaction.ticker} ${transaction.type.toUpperCase()}`;
     }
   };
 

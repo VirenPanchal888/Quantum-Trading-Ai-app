@@ -37,13 +37,13 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
       <aside
-        className={`fixed top-0 left-0 h-full w-64 bg-black/20 backdrop-blur-xl border-r border-white/10 transition-transform duration-300 ${
+        className={`fixed top-0 left-0 h-full w-72 bg-black/40 backdrop-blur-xl border-r border-white/10 transition-transform duration-300 z-50 ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        } md:translate-x-0`}
       >
-        <div className="p-4">
+        <div className="p-6">
           <Button
             variant="ghost"
             size="icon"
@@ -53,20 +53,28 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             <ArrowLeft className="h-4 w-4" />
           </Button>
           
-          <nav className="space-y-2 mt-8">
+          <div className="mb-8">
+            <h2 className="text-xl font-bold bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
+              Quantum TradeXpert
+            </h2>
+          </div>
+          
+          <nav className="space-y-2">
             {navItems.map((item) => (
               <Button
                 key={item.path}
-                variant={isActive(item.path) ? "default" : "ghost"}
-                className={`w-full justify-start gap-2 ${
-                  isActive(item.path) ? "" : "hover:bg-white/10"
+                variant={isActive(item.path) ? "secondary" : "ghost"}
+                className={`w-full justify-start gap-3 px-4 py-6 text-base ${
+                  isActive(item.path) 
+                    ? "bg-white/10 text-white" 
+                    : "text-gray-400 hover:text-white hover:bg-white/5"
                 }`}
                 onClick={() => {
                   navigate(item.path);
                   setIsSidebarOpen(false);
                 }}
               >
-                <item.icon className="h-4 w-4" />
+                <item.icon className="h-5 w-5" />
                 {item.name}
               </Button>
             ))}
@@ -74,9 +82,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         </div>
       </aside>
 
-      <main className="md:ml-64">
-        <header className="sticky top-0 z-10 backdrop-blur-xl bg-black/20 border-b border-white/10">
-          <div className="flex items-center h-14 px-4">
+      <main className="transition-all duration-300 md:ml-72">
+        <header className="sticky top-0 z-40 backdrop-blur-xl bg-black/40 border-b border-white/10">
+          <div className="flex items-center h-16 px-6">
             {!isHomePage && (
               <Button
                 variant="ghost"
@@ -84,7 +92,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 className="mr-2"
                 onClick={() => navigate(-1)}
               >
-                <ArrowLeft className="h-4 w-4" />
+                <ArrowLeft className="h-5 w-5" />
               </Button>
             )}
             <Button
@@ -93,11 +101,11 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
               className="md:hidden"
               onClick={() => setIsSidebarOpen(true)}
             >
-              <Menu className="h-4 w-4" />
+              <Menu className="h-5 w-5" />
             </Button>
           </div>
         </header>
-        <div className="p-4">{children}</div>
+        <div className="p-6">{children}</div>
       </main>
     </div>
   );

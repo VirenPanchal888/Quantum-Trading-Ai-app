@@ -1,6 +1,7 @@
+
 import { useEffect, useState } from "react";
 import Layout from "@/components/layout/Layout";
-import { Transaction } from "@/data/forexList";
+import { Transaction, ForexTransaction, IPOTransaction, StockTransaction } from "@/data/forexList";
 
 const Portfolio = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -52,13 +53,13 @@ const Portfolio = () => {
   };
 
   const getTransactionDisplayInfo = (transaction: Transaction) => {
-    if (transaction.transactionType === 'forex') {
-      const forexTransaction = transaction as ForexTransaction;
-      return `${forexTransaction.pair} ${transaction.type.toUpperCase()}`;
-    } else if (transaction.transactionType === 'ipo') {
-      return `${transaction.symbol} ${transaction.type.toUpperCase()}`;
-    } else {
-      return `${transaction.ticker} ${transaction.type.toUpperCase()}`;
+    switch (transaction.transactionType) {
+      case 'forex':
+        return `${transaction.pair} ${transaction.type.toUpperCase()}`;
+      case 'ipo':
+        return `${transaction.symbol} ${transaction.type.toUpperCase()}`;
+      case 'stock':
+        return `${transaction.ticker} ${transaction.type.toUpperCase()}`;
     }
   };
 
@@ -97,10 +98,14 @@ const Portfolio = () => {
                       </td>
                       <td className="px-4 py-3">
                         <div className="font-medium text-gray-900">
-                          {'ticker' in transaction ? transaction.ticker : transaction.pair}
+                          {transaction.transactionType === 'stock' ? transaction.ticker : 
+                           transaction.transactionType === 'forex' ? transaction.pair :
+                           transaction.symbol}
                         </div>
                         <div className="text-xs text-gray-500">
-                          {'sector' in transaction ? transaction.sector : 'Forex'}
+                          {transaction.transactionType === 'stock' ? transaction.sector : 
+                           transaction.transactionType === 'forex' ? 'Forex' :
+                           'IPO'}
                         </div>
                       </td>
                       <td className="px-4 py-3">

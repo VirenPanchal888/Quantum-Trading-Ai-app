@@ -13,4 +13,4 @@ Why we used lovable.ai?
 2)Enhanced Accuracy: AI-driven algorithms minimize human error and produce reliable insights, ensuring the data you see is both timely and accurate.
 3)Faster Development Cycle: Automating core processes with lovable.ai let us focus on innovation, feature-building, and overall user experience.
 4)Consistent Improvement: The AI continuously learns from new data, meaning your trading experience can only get smarter over time.
-5)Positive Traits & Benefits
+

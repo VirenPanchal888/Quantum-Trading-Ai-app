@@ -31,30 +31,29 @@ export const ForexChart = ({ pair }: ForexChartProps) => {
       if (container.current && window.TradingView) {
         container.current.innerHTML = '';
         new window.TradingView.widget({
-          width: "100%",
-          height: 500,
+          autosize: true,
           symbol: `FX:${pair.replace('/', '')}`,
           interval: "D",
           timezone: "Etc/UTC",
-          theme: "light",
+          theme: "dark",
           style: "1",
           locale: "en",
-          toolbar_bg: "#f1f3f6",
+          toolbar_bg: "#1e293b",
           enable_publishing: false,
-          allow_symbol_change: false,
+          allow_symbol_change: true,
           container_id: container.current.id,
           hide_side_toolbar: false,
           studies: [
             "MASimple@tv-basicstudies",
             "RSI@tv-basicstudies",
-            "MACD@tv-basicstudies"
+            "MACD@tv-basicstudies",
+            "StochasticRSI@tv-basicstudies"
           ],
-          disabled_features: [
-            "use_localstorage_for_settings"
-          ],
-          enabled_features: [
-            "study_templates"
-          ],
+          withdateranges: true,
+          range: "YTD",
+          height: 600,
+          save_image: true,
+          show_popup_button: true,
         });
       }
     }
@@ -67,12 +66,12 @@ export const ForexChart = ({ pair }: ForexChartProps) => {
   }, [pair]);
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-6">
-      <h2 className="text-xl font-semibold text-gray-900 mb-4">{pair} Chart</h2>
+    <div className="rounded-lg border border-gray-800 bg-black/40 p-6">
+      <h2 className="text-xl font-semibold text-white mb-4">{pair} Chart</h2>
       <div 
         ref={container} 
         id={`tradingview_forex_${pair.replace('/', '')}`} 
-        className="w-full"
+        className="w-full h-[600px]"
       />
     </div>
   );

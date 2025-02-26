@@ -41,8 +41,7 @@ const StockChart = ({ ticker }: StockChartProps) => {
       if (container.current && window.TradingView) {
         container.current.innerHTML = '';
         new window.TradingView.widget({
-          width: "100%",
-          height: 500,
+          autosize: true,
           symbol: ticker.includes(':') ? ticker : `NYSE:${ticker}`,
           interval: timeframeIntervals[timeframe],
           timezone: "Etc/UTC",
@@ -51,19 +50,20 @@ const StockChart = ({ ticker }: StockChartProps) => {
           locale: "en",
           toolbar_bg: "#1e293b",
           enable_publishing: false,
-          allow_symbol_change: false,
+          allow_symbol_change: true,
           container_id: container.current.id,
           hide_side_toolbar: false,
+          withdateranges: true,
+          range: "YTD",
           studies: [
             "MASimple@tv-basicstudies",
-            "VWAP@tv-basicstudies"
+            "RSI@tv-basicstudies",
+            "MACD@tv-basicstudies",
+            "StochasticRSI@tv-basicstudies"
           ],
-          disabled_features: [
-            "use_localstorage_for_settings"
-          ],
-          enabled_features: [
-            "hide_left_toolbar_by_default"
-          ],
+          height: 600,
+          save_image: true,
+          show_popup_button: true,
         });
       }
     }
@@ -94,8 +94,8 @@ const StockChart = ({ ticker }: StockChartProps) => {
       </div>
       <div 
         ref={container} 
-        id={`tradingview_${ticker}`} 
-        className="w-full"
+        id={`tradingview_${ticker.replace(':', '_')}`} 
+        className="w-full h-[600px]"
       />
     </div>
   );

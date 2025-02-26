@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import Layout from "@/components/layout/Layout";
 import { Transaction } from "@/data/forexList";
@@ -49,6 +48,16 @@ const Portfolio = () => {
         return transaction.quantity;
       case 'ipo':
         return transaction.shares;
+    }
+  };
+
+  const filterTransactions = (transaction: Transaction) => {
+    if (transaction.transactionType === 'forex') {
+      return `${transaction.pair} ${transaction.type.toUpperCase()}`;
+    } else if (transaction.transactionType === 'ipo') {
+      return `${transaction.symbol} ${transaction.type.toUpperCase()}`;
+    } else {
+      return `${transaction.ticker} ${transaction.type.toUpperCase()}`;
     }
   };
 

@@ -86,6 +86,7 @@ export const forexPairs: ForexPair[] = [
   },
   {
     symbol: "GBP/USD",
+    pair: "GBP/USD",
     name: "British Pound / US Dollar",
     description: "British Pound vs US Dollar",
     category: "major",
@@ -95,6 +96,7 @@ export const forexPairs: ForexPair[] = [
   },
   {
     symbol: "USD/JPY",
+    pair: "USD/JPY",
     name: "US Dollar / Japanese Yen",
     description: "US Dollar vs Japanese Yen",
     category: "major",
@@ -104,6 +106,7 @@ export const forexPairs: ForexPair[] = [
   },
   {
     symbol: "USD/CHF",
+    pair: "USD/CHF",
     name: "US Dollar / Swiss Franc",
     description: "US Dollar vs Swiss Franc",
     category: "major",
@@ -113,6 +116,7 @@ export const forexPairs: ForexPair[] = [
   },
   {
     symbol: "AUD/USD",
+    pair: "AUD/USD",
     name: "Australian Dollar / US Dollar",
     description: "Australian Dollar vs US Dollar",
     category: "major",
@@ -122,6 +126,7 @@ export const forexPairs: ForexPair[] = [
   },
   {
     symbol: "EUR/GBP",
+    pair: "EUR/GBP",
     name: "Euro / British Pound",
     description: "Euro vs British Pound",
     category: "minor",
@@ -131,6 +136,7 @@ export const forexPairs: ForexPair[] = [
   },
   {
     symbol: "EUR/JPY",
+    pair: "EUR/JPY",
     name: "Euro / Japanese Yen",
     description: "Euro vs Japanese Yen",
     category: "minor",
